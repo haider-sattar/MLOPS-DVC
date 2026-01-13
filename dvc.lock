@@ -21,8 +21,13 @@ stages:
       size: 971241
     - path: src/build_features.py
       hash: md5
-      md5: 6ba7ea37e9ea12f3fd2d9603bb9efa26
-      size: 1932
+      md5: ff3b32556fb8be30484774efbc6feb1c
+      size: 2238
+    params:
+      params.yml:
+        data.random_state: 42
+        data.test_size: 0.2
+        data.val_size: 0.2
     outs:
     - path: data/processed/X_test.csv
       hash: md5
@@ -69,16 +74,23 @@ stages:
       size: 2256
     - path: src/train.py
       hash: md5
-      md5: f5185f41b582ed647627c776d4821589
-      size: 1320
+      md5: 33186e7983d7f393d6704fdc4a74f43d
+      size: 1745
+    params:
+      params.yml:
+        data.random_state: 42
+        model.C: 1.0
+        model.max_iter: 1500
+        model.penalty: l2
+        model.solver: liblinear
     outs:
     - path: models/artifacts/model.pkl
       hash: md5
-      md5: fd00c9bbc9470ea899f01c74023fbc15
-      size: 2079
+      md5: b6bad6bfe62fe3da28cd87d285e52453
+      size: 2075
     - path: models/metrics.json
       hash: md5
-      md5: 536774d0673f77df1efabdb00a7f6606
+      md5: 40312ee48dfb3a8d6054ec6c21ed9059
       size: 109
   evaluate:
     cmd: /home/ali-haider/projects/.mlopsvenv/bin/python src/evaluate.py
@@ -93,8 +105,8 @@ stages:
       size: 2820
     - path: models/artifacts/model.pkl
       hash: md5
-      md5: fd00c9bbc9470ea899f01c74023fbc15
-      size: 2079
+      md5: b6bad6bfe62fe3da28cd87d285e52453
+      size: 2075
     - path: src/evaluate.py
       hash: md5
       md5: 1835595a980f76efb34ef0f16c78f13e
@@ -102,5 +114,5 @@ stages:
     outs:
     - path: models/test_metrics.json
       hash: md5
-      md5: 1c53f3fdea490727edf49856b27d4372
+      md5: db64efff9bf6aaec76f46c9e97c71d08
       size: 108

@@ -10,6 +10,11 @@ stages:
     deps:
     - data/raw/churn.csv
     - src/build_features.py
+    params:
+    - params.yml:
+      - data.test_size
+      - data.val_size
+      - data.random_state
     outs:
     - data/processed/X_test.csv
     - data/processed/X_train.csv
@@ -25,6 +30,13 @@ stages:
     - data/processed/y_train.csv
     - data/processed/y_val.csv
     - src/train.py
+    params:
+    - params.yml:
+      - model.max_iter
+      - model.solver
+      - model.penalty
+      - model.C
+      - data.random_state
     outs:
     - models/artifacts/model.pkl
     metrics:

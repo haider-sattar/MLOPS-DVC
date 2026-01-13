@@ -1,17 +1,24 @@
 import pandas as pd
 from pathlib import Path
 from sklearn.model_selection import train_test_split
+import yaml
 from utils.logger import get_logger
 
 logger = get_logger(__name__)
 
 RAW_DATA_PATH = Path("data/raw/churn.csv")
 PROCESSED_DIR = Path("data/processed")
+PARAMS_PATH = Path("params.yml")
+
+
+def load_params():
+    with PARAMS_PATH.open() as f:
+        return yaml.safe_load(f)
 
 def build_features(
-    test_size: float = 0.2,
-    val_size: float = 0.2,
-    random_state: int = 42,
+    test_size: float,
+    val_size: float,
+    random_state: int,
 ):
     logger.info("Starting feature engineering")
 
@@ -70,4 +77,11 @@ def build_features(
     )
 
 if __name__ == "__main__":
-    build_features()
+    params = load_params()
+    data_cfg = params["data"]
+
+    build_features(
+        test_size=data_cfg["test_size"],
+        val_size=data_cfg["val_size"],
+        random_state=data_cfg["random_state"],
+    )
