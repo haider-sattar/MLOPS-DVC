@@ -1,0 +1,42 @@
+stages:
+  ingest:
+    cmd: /home/ali-haider/projects/.mlopsvenv/bin/python src/data_ingestion.py
+    deps:
+    - src/data_ingestion.py
+    outs:
+    - data/raw/churn.csv
+  features:
+    cmd: /home/ali-haider/projects/.mlopsvenv/bin/python src/build_features.py
+    deps:
+    - data/raw/churn.csv
+    - src/build_features.py
+    outs:
+    - data/processed/X_test.csv
+    - data/processed/X_train.csv
+    - data/processed/X_val.csv
+    - data/processed/y_test.csv
+    - data/processed/y_train.csv
+    - data/processed/y_val.csv
+  train:
+    cmd: /home/ali-haider/projects/.mlopsvenv/bin/python src/train.py
+    deps:
+    - data/processed/X_train.csv
+    - data/processed/X_val.csv
+    - data/processed/y_train.csv
+    - data/processed/y_val.csv
+    - src/train.py
+    outs:
+    - models/artifacts/model.pkl
+    metrics:
+    - models/metrics.json:
+        cache: false
+  evaluate:
+    cmd: /home/ali-haider/projects/.mlopsvenv/bin/python src/evaluate.py
+    deps:
+    - data/processed/X_test.csv
+    - data/processed/y_test.csv
+    - models/artifacts/model.pkl
+    - src/evaluate.py
+    metrics:
+    - models/test_metrics.json:
+        cache: false

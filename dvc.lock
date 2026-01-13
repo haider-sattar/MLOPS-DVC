@@ -1,0 +1,106 @@
+schema: '2.0'
+stages:
+  ingest:
+    cmd: /home/ali-haider/projects/.mlopsvenv/bin/python src/data_ingestion.py
+    deps:
+    - path: src/data_ingestion.py
+      hash: md5
+      md5: 1c6beae9b6a7503e316cd89331f60187
+      size: 634
+    outs:
+    - path: data/raw/churn.csv
+      hash: md5
+      md5: 8cac3095fcf1fdc5d276164ba877e721
+      size: 971241
+  features:
+    cmd: /home/ali-haider/projects/.mlopsvenv/bin/python src/build_features.py
+    deps:
+    - path: data/raw/churn.csv
+      hash: md5
+      md5: 8cac3095fcf1fdc5d276164ba877e721
+      size: 971241
+    - path: src/build_features.py
+      hash: md5
+      md5: 6ba7ea37e9ea12f3fd2d9603bb9efa26
+      size: 1932
+    outs:
+    - path: data/processed/X_test.csv
+      hash: md5
+      md5: 9b06681773c628e792e5d3a5706474ba
+      size: 232624
+    - path: data/processed/X_train.csv
+      hash: md5
+      md5: cb5debcce83019571568f0458027eb93
+      size: 742368
+    - path: data/processed/X_val.csv
+      hash: md5
+      md5: d63e27d8bd70655b5719c506dc0047f9
+      size: 186048
+    - path: data/processed/y_test.csv
+      hash: md5
+      md5: 72929f3fd26b9a2d2f498d24bed869d2
+      size: 2820
+    - path: data/processed/y_train.csv
+      hash: md5
+      md5: 9244e56a52b5aeb6f46d8a028cceff34
+      size: 9006
+    - path: data/processed/y_val.csv
+      hash: md5
+      md5: 7e95e34acd78d0a6f2cad983e92f747a
+      size: 2256
+  train:
+    cmd: /home/ali-haider/projects/.mlopsvenv/bin/python src/train.py
+    deps:
+    - path: data/processed/X_train.csv
+      hash: md5
+      md5: cb5debcce83019571568f0458027eb93
+      size: 742368
+    - path: data/processed/X_val.csv
+      hash: md5
+      md5: d63e27d8bd70655b5719c506dc0047f9
+      size: 186048
+    - path: data/processed/y_train.csv
+      hash: md5
+      md5: 9244e56a52b5aeb6f46d8a028cceff34
+      size: 9006
+    - path: data/processed/y_val.csv
+      hash: md5
+      md5: 7e95e34acd78d0a6f2cad983e92f747a
+      size: 2256
+    - path: src/train.py
+      hash: md5
+      md5: f5185f41b582ed647627c776d4821589
+      size: 1320
+    outs:
+    - path: models/artifacts/model.pkl
+      hash: md5
+      md5: fd00c9bbc9470ea899f01c74023fbc15
+      size: 2079
+    - path: models/metrics.json
+      hash: md5
+      md5: 536774d0673f77df1efabdb00a7f6606
+      size: 109
+  evaluate:
+    cmd: /home/ali-haider/projects/.mlopsvenv/bin/python src/evaluate.py
+    deps:
+    - path: data/processed/X_test.csv
+      hash: md5
+      md5: 9b06681773c628e792e5d3a5706474ba
+      size: 232624
+    - path: data/processed/y_test.csv
+      hash: md5
+      md5: 72929f3fd26b9a2d2f498d24bed869d2
+      size: 2820
+    - path: models/artifacts/model.pkl
+      hash: md5
+      md5: fd00c9bbc9470ea899f01c74023fbc15
+      size: 2079
+    - path: src/evaluate.py
+      hash: md5
+      md5: 1835595a980f76efb34ef0f16c78f13e
+      size: 1043
+    outs:
+    - path: models/test_metrics.json
+      hash: md5
+      md5: 1c53f3fdea490727edf49856b27d4372
+      size: 108
